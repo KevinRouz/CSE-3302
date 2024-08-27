@@ -1,4 +1,5 @@
-"# CSE-3302" 
+**CSE-3302**
+
 This repo contains the Labs developed for CSE 3302 (Programming Languages) with Kelly Scott French at UTA.
 
 Lab 1- Directory Size:
