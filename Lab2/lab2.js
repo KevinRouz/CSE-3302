@@ -78,7 +78,9 @@ let row2 = makeRow( // Create the second data row with values
 let table = makeTable(headerRow + row1 + row2); // Wrap the rows in a table tag
 console.log(table);
 
-function makeChecker(multiple, evenOdd) { // General function to check multiples and even/odd condition
+
+
+function customEvenOddFilter(multiple, evenOdd, array) { // General function to check multiples and even/odd condition, given an array of numbers
     let rem;
     switch(evenOdd) { // Determine remainder based on whether we're checking for "even" or "odd"
         case "even":
@@ -88,18 +90,29 @@ function makeChecker(multiple, evenOdd) { // General function to check multiples
             rem = 1;
             break;
         default:
-            throw new Error("invalid usage: use 'even' or 'odd'. ex: makeChecker(5, \"odd\")."); // Error if neither is provided
+            throw new Error("invalid usage: use 'even' or 'odd'. ex: customEvenOddFilter(5, \"odd\", array)."); // Error if neither is provided
     }
 
-    return function(num) { // Return a function that checks if num is a multiple and satisfies the even/odd condition
-        return (num % multiple === 0) && (num % 2 === rem);
-    }
+    return array.filter(x => (x % multiple === 0) && (x % 2 === rem)); // Return an array of the filtered numbers
 }
 
-let oddMult5Checker = makeChecker(5, "odd"); // Create a function that checks for odd multiples of 5
-let oddMult5 = numbers.filter(oddMult5Checker); // Use the checker to filter numbers array for odd multiples of 5
-console.log(oddMult5);
+let oddMult5new = customEvenOddFilter(5, "odd", numbers); // Filter numbers array for odd multiples of 5
+console.log(oddMult5new);
 
-let evenMult7Checker = makeChecker(7, "even"); // Create a function that checks for even multiples of 7
-let evenMult7 = numbers.filter(evenMult7Checker); // Use the checker to filter numbers array for even multiples of 7
-console.log(evenMult7);
+function customEvenOddReduceFilter(multiple, evenOdd, operation, array){ // General function to first filter an array by multiples of a number and an even/odd condition, and then reduce it based on a given operation
+    let rem;
+    switch(evenOdd) { // Determine remainder based on whether we're checking for "even" or "odd"
+        case "even":
+            rem = 0;
+            break;
+        case "odd":
+            rem = 1;
+            break;
+        default:
+            throw new Error("invalid usage: use 'even' or 'odd'. ex: customEvenOddReduceFilter(5, \"odd\", ((sum, num) => sum + num, 0), array)."); // Error if neither is provided
+    }
+    return array.filter(x => (x % multiple === 0) && (x % 2 === rem)).reduce(operation, 0); // First filter, then reduce
+}
+
+let sumOddMult5 = customEvenOddReduceFilter(5, "odd", (x, y) => x + y, numbers); // Filter numbers array for odd multiples of 5, then reduce based on summation
+console.log(sumOddMult5);
