@@ -1,3 +1,8 @@
+# Kevin Farokhrouz
+# 1002072886
+# 10/29/24
+# Windows 11
+
 FILENAME = "input_RPN.txt"
 
 def add(op1, op2):
